@@ -1,7 +1,7 @@
 const radians_to_degrees = rad => (rad * 180.0) / Math.PI;
 const degrees_to_radians = deg => (deg * Math.PI) / 180.0;
 
-function Triangle(dat1, str1, dat2, str2){
+function triangle(dat1, str1, dat2, str2){
   var triA = new Object();
 
   triA[str1] = dat1;
@@ -74,7 +74,7 @@ function Triangle(dat1, str1, dat2, str2){
   console.log("--------------＼(٥⁀▽⁀ )／--------------");
 }
 //Examples for Pifagor triangle
-//Triangle(36.86989764584402, "opposite angle", 3, "leg");
-//Triangle(53.13010235415598, "adjacent angle", 3, "leg");
-//Triangle(5, "hypotenuse", 3, "leg");
-//Triangle(5, "hypotenuse", 36.86989764584402, "angle");
+//triangle(36.86989764584402, "opposite angle", 3, "leg");
+//triangle(53.13010235415598, "adjacent angle", 3, "leg");
+//triangle(5, "hypotenuse", 3, "leg");
+//triangle(5, "hypotenuse", 36.86989764584402, "angle");
