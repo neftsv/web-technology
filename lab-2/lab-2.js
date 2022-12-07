@@ -1,24 +1,31 @@
 const radians_to_degrees = rad => (rad * 180.0) / Math.PI;
 const degrees_to_radians = deg => (deg * Math.PI) / 180.0;
 
+console.log("func: triangle(dat1, str1, dat2, str2); \ndat - number, str - key (leg, hypotenuse, opposite angle, adjacent angle, angle); \nexample: triangle(5, \"hypotenuse\", 3, \"leg\");");
+
 function triangle(dat1, str1, dat2, str2){
   var triA = new Object();
 
-  triA[str1] = dat1;
-  triA[str2] = dat2;
-  
+  if(str1 == "leg" && str2 == "leg"){
+    triA[str1] = dat1;
+    triA.b = dat2;
+  }
+  else{
+    triA[str1] = dat1;
+    triA[str2] = dat2;
+  }
   //Some checks
-  if(triA["opposite angle"] && (triA["opposite angle"] <= 0.0 || triA["opposite angle"] >= 90.0)) {
+  if(triA["opposite angle"] <= 0.0 || triA["opposite angle"] >= 90.0) {
      console.log("(」°ロ°)」  Error! invalid number: opposite angle");
      return;
   }
   
-  if(triA["adjacent angle"] && (triA["adjacent angle"] <= 0.0 || triA["adjacent angle"] >= 90.0)) {
+  if(triA["adjacent angle"] <= 0.0 || triA["adjacent angle"] >= 90.0) {
     console.log("(」°ロ°)」  Error! invalid number: adjacent angle");
     return;
   }
   
-  if(triA["angle"] && (triA["angle"] <= 0.0 || triA["angle"] >= 90.0)) {
+  if(triA["angle"] <= 0.0 || triA["angle"] >= 90.0) {
     console.log("(」°ロ°)」  Error! invalid number: angle");
     return;
   }
@@ -30,6 +37,11 @@ function triangle(dat1, str1, dat2, str2){
   
   if(triA["hypotenuse"] <= 0.0){
     console.log("(」°ロ°)」  Error! invalid number: hypotenuse");
+    return;
+  }
+  
+  if(triA.b <= 0.0){
+    console.log("(」°ロ°)」  Error! invalid number: leg");
     return;
   }
   
@@ -46,7 +58,8 @@ function triangle(dat1, str1, dat2, str2){
   //c
   triA["hypotenuse"] =     triA["hypotenuse"] ||
                            triA["leg"] / Math.cos(triA["adjacent angle"]) ||    //Leg and adjacent angle
-                           triA["leg"] / Math.sin(triA["opposite angle"]);      //Leg and opposite angle
+                           triA["leg"] / Math.sin(triA["opposite angle"]) ||    //Leg and opposite angle
+                           Math.sqrt(Math.pow(triA["leg"], 2) + Math.pow(triA.b, 2));
 
   //Alpha
   triA["opposite angle"] = triA["opposite angle"] || 
@@ -63,7 +76,8 @@ function triangle(dat1, str1, dat2, str2){
                            triA["opposite angle"];                              //Angle always is equal opposite angle
 
   //b
-  triA.b = Math.sqrt(Math.pow(triA["hypotenuse"], 2) - Math.pow(triA["leg"], 2));
+  triA.b =                 triA.b ||
+                           Math.sqrt(Math.pow(triA["hypotenuse"], 2) - Math.pow(triA["leg"], 2));
   
   console.log("a: " + triA["leg"]);
   console.log("b: " + triA.b);
@@ -78,3 +92,4 @@ function triangle(dat1, str1, dat2, str2){
 //triangle(53.13010235415598, "adjacent angle", 3, "leg");
 //triangle(5, "hypotenuse", 3, "leg");
 //triangle(5, "hypotenuse", 36.86989764584402, "angle");
+//triangle(4, "leg", 3, "leg");
