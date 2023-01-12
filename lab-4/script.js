@@ -5,6 +5,7 @@
 	var homeHtml="";
 	var allCategoriesUrl="data/categories.json";
 	var categoriesTitleHtml="snippets/categories-title-snippet.html";
+	var randomHtml="snippets/random.html";
 	var categoryHtml="snippets/category-snippet.html";
 	var catalogItemsUrl="data/catalog/";
 	var catalogItemsTitleHtml="snippets/catalog-item-title.html";
@@ -48,27 +49,48 @@
 			catalogItemsUrl+categoryShort+".json",
 			buildAndShowCatalogItemsHTML);
 	};
+	//random
+	ns.loadRandomCatalogItems = function(randomCategoryShort) {
+        var letters = "ABCD";
+        var randomIndex = Math.floor(Math.random() * letters.length);
+        randomCategoryShort = letters[randomIndex];
 
-	function buildAndShowCategoriesHTML(categories){
-		$ajaxUtils.sendGetRequest(
-			categoriesTitleHtml,
-			function(categoriesTitleHtml){
-				$ajaxUtils.sendGetRequest(
-					categoryHtml,
-					function(categoryHtml){
-						var categoryViewHtml=
-						buildCategoriesViewHtml(categories,
-							categoriesTitleHtml,categoryHtml);
-						insertHtml("#main-content",categoryViewHtml);
-					},
-					false);
-			},
-			false);
+               showLoading("#main-content");
+               $ajaxUtils.sendGetRequest(
+                       catalogItemsUrl + randomCategoryShort + ".json",
+                       buildAndShowCatalogItemsHTML);
+};
+
+		
+
+	function buildAndShowCategoriesHTML(categories) {
+	    $ajaxUtils.sendGetRequest(
+	        categoriesTitleHtml,
+	        function(categoriesTitleHtml) {
+	            $ajaxUtils.sendGetRequest(
+	                categoryHtml,
+	                function(categoryHtml) {
+	                    $ajaxUtils.sendGetRequest(
+	                        randomHtml,
+	                        function(randomHtml) {
+	                            var categoryViewHtml =
+	                                buildCategoriesViewHtml(categories,
+	                                    categoriesTitleHtml, categoryHtml, randomHtml);
+	                            insertHtml("#main-content", categoryViewHtml);
+	                        },
+	                        false);
+	                },
+	                false);
+	        },
+	        false);
 	}
 
 	function buildCategoriesViewHtml(categories,
-		categoriesTitleHtml, categoryHtml){
+		categoriesTitleHtml, categoryHtml,randomHtml){
 		var finalHtml=categoriesTitleHtml;
+		var finalRandom=randomHtml;
+
+		
 		finalHtml+="<section class='row'>";
 		for (var i = 0; i < categories.length; i++) {
 			var html = categoryHtml;
@@ -83,9 +105,13 @@
 			insertProperty(html,"notes",notes);
 			finalHtml+=html;
 
+
 		}
+		finalHtml+=finalRandom;
 		finalHtml+="</section>";
+		
 		return finalHtml;
+		
 	}
 
 	function buildAndShowCatalogItemsHTML(categoryCatalogItems){
